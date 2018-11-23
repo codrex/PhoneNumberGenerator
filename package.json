@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./src/bin/www"
+    "start": "nodemon ./src/bin/www",
+    "migrate": "sequelize db:migrate"
   },
   "dependencies": {
     "cookie-parser": "~1.4.3",
@@ -11,7 +12,10 @@
     "express": "~4.16.0",
     "http-errors": "~1.6.2",
     "morgan": "~1.9.0",
-    "pug": "2.0.0-beta11"
+    "pug": "2.0.0-beta11",
+    "sequelize": "^4.41.2",
+    "sequelize-cli": "^5.3.0",
+    "sqlite3": "^4.0.4"
   },
   "devDependencies": {
     "nodemon": "^1.18.6"
