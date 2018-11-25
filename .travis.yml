@@ -1,0 +1,22 @@
+language: node_js
+
+node_js: '8.11.1'
+
+install:
+  - npm install
+
+script:
+  - yarn test
+
+env:
+  - NODE_ENV=test
+
+cache:
+  directories:
+    - 'node_modules'
+
+before_script:
+  - sequelize db:migrate
+
+notifications:
+  webhooks: https://coveralls.io/webhook repo_token=IE0ObAuB2eSIWueuvaem8oevz4yYtTc59

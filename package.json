@@ -5,7 +5,8 @@
   "scripts": {
     "start": "nodemon bin/www",
     "migrate": "sequelize db:migrate",
-    "test": "jest"
+    "test": "jest",
+    "test:cover": "jest - --coverage"
   },
   "dependencies": {
     "cookie-parser": "~1.4.3",
