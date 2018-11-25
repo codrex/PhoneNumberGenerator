@@ -4,8 +4,10 @@
     "storage": "data/dev-db.sqlite3"
   },
   "test": {
-    "dialect": "sqlite",
-    "storage": "data/test-db.sqlite3"
+    "adapter": "sqlite3",
+    "database": ":memory:",
+    "timeout": 500,
+    "dialect": "sqlite"
   },
   "production": {
     "dialect": "sqlite",
