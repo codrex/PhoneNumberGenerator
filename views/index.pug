@@ -1,5 +1,40 @@
 extends layout
-
+mixin tableRow(item, index)
+  tr
+    th(scope="row")=index + 1
+      td=item.number
+      td=item.assigned
 block content
-  h1= title
-  p Welcome to #{title}
+  .content
+      h1.title Phone Number Generator
+      form.form
+        button.c-btn.c-btn--primary(type="submit") Generate numbers
+        input(type="number").num-input 
+      .table-container
+        .table-header
+          p.table-header-text total
+          p.table-header-text max number
+          p.table-header-text min number
+        .table-responsive
+          table.table.table-striped.table-borderless.table-hover
+            thead
+              tr
+                th(scope="col") #
+                th(scope="col") Phone number
+                  i.fa.fa-sort.sort-icon(aria-hidden="true" role="presentation")
+                th(scope="col") assigned
+            -
+             const items = [
+              {number:"0904958694", assigned:false},
+              {number:"0904958694", assigned:false},
+              {number:"0904958694", assigned:false},
+              {number:"0904958694", assigned:false},
+              {number:"0904958694", assigned:false},
+              {number:"0904958694", assigned:false},
+              {number:"0904958694", assigned:false}
+              ]
+
+            tbody
+              each item, index in items
+                +tableRow(item,index)
+          

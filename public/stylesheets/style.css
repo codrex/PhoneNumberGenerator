@@ -1,8 +1,100 @@
+:root {
+  font-size: 70%;
+  --main-color: #009688;
+  --margin: 5rem;
+}
+
+html,
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  height: 100%;
+  font-size: 1.6rem;
+}
+
+body {
+  padding: 2rem;
+  font-family: 'Nunito', sans-serif;
 }
 
 a {
-  color: #00B7FF;
+  color: #00b7ff;
+}
+
+.title {
+  text-align: center;
+  font-size: 4rem;
+  margin-bottom: var(--margin);
+}
+
+.content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  min-height: 80%;
+  padding: 0 20rem;
+}
+.form {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  margin: var(--margin) 0;
+}
+
+.num-input {
+  text-align: center;
+  font-size: 3rem;
+  width: 15rem;
+}
+.c-btn,
+.num-input {
+  outline-color: var(--main-color) !important;
+}
+.c-btn {
+  font-size: 2rem;
+  padding: 2.5rem;
+  border: 0;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+.c-btn--primary {
+  background-color: var(--main-color);
+  color: white;
+  border: 1px solid var(--main-color);
+}
+
+.c-btn--outline {
+  background-color: transparent;
+  color: var(--main-color);
+  border: 1px solid var(--main-color);
+}
+.sort-icon {
+  margin-left: 0.5rem;
+  cursor: pointer;
+}
+
+.table-container {
+  box-shadow: 1px 1px 70px 20px rgba(10, 10, 10, 0.04);
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 4px;
+}
+
+.table-header {
+  width: 100%;
+  display: flex;
+  color: var(--main-color);
+  padding: 0.5rem;
+  align-items: flex-end;
+  flex-direction: column;
+  text-transform: capitalize;
+  font-size: 1.2rem;
+}
+
+thead {
+  color: var(--main-color);
+}
+
+th {
+  text-transform: uppercase;
 }
