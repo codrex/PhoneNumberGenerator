@@ -2,6 +2,9 @@ language: node_js
 
 node_js: '8.11.1'
 
+global:
+  - CC_TEST_REPORTER_ID=a1f4a0c609f38a8367edade51ca40a4fccf7523ffc8f66cd8c96a681c2ced8d9
+
 install:
   - npm install
 
@@ -16,7 +19,10 @@ cache:
     - 'node_modules'
 
 before_script:
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
   - sequelize db:migrate
 
-notifications:
-  webhooks: https://coveralls.io/webhook repo_token=IE0ObAuB2eSIWueuvaem8oevz4yYtTc59
+after_script:
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
