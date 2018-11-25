@@ -5,8 +5,10 @@
   "scripts": {
     "start": "nodemon bin/www",
     "migrate": "sequelize db:migrate",
-    "test": "jest",
-    "test:cover": "jest - --coverage"
+    "migrate:undo": "sequelize db:migrate:undo:all",
+    "test": "NODE_ENV=test yarn migrate:undo && NODE_ENV=test yarn migrate && jest",
+    "test:ci": "jest",
+    "test:cover": "yarn test --coverage"
   },
   "dependencies": {
     "cookie-parser": "~1.4.3",
