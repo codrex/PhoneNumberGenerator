@@ -1,4 +1,5 @@
-'use strict';
+const { isBoolean, toBoolean } = require('../utils');
+
 module.exports = (sequelize, DataTypes) => {
   const PhoneNumber = sequelize.define(
     'PhoneNumber',
@@ -6,22 +7,25 @@ module.exports = (sequelize, DataTypes) => {
       number: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique: true,
         validate: {
           isNumeric: true,
-          max: 10,
-          min: 10
-        }
+          len: [10, 10],
+        },
       },
       assigned: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
-        defaultValue: false
-      }
+        validate: {
+          isBoolean,
+        },
+        get() {
+          const assigned = this.getDataValue('assigned');
+          return toBoolean(assigned);
+        },
+      },
     },
-    {}
+    {},
   );
-  PhoneNumber.associate = function(models) {
-    // associations can be defined here
-  };
   return PhoneNumber;
 };
