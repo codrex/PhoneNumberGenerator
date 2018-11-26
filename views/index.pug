@@ -1,9 +1,14 @@
 extends layout
+
 mixin tableRow(item, index)
   tr
     th(scope="row")=index + 1
       td=item.number
       td=item.assigned
+
+mixin headerText(title,value)
+  p.table-header-text #{title}:  #{value}
+
 block content
   .content
       h1.title Phone Number Generator
@@ -12,29 +17,19 @@ block content
         input(type="number").num-input 
       .table-container
         .table-header
-          p.table-header-text total
-          p.table-header-text max number
-          p.table-header-text min number
+          +headerText("total",total)
+          +headerText("max number",maxNumber)
+          +headerText("min number",minNumber)
         .table-responsive
           table.table.table-striped.table-borderless.table-hover
             thead
               tr
                 th(scope="col") #
-                th(scope="col") Phone number
+                th(scope="col") Phone number 
                   i.fa.fa-sort.sort-icon(aria-hidden="true" role="presentation")
                 th(scope="col") assigned
-            -
-             const items = [
-              {number:"0904958694", assigned:false},
-              {number:"0904958694", assigned:false},
-              {number:"0904958694", assigned:false},
-              {number:"0904958694", assigned:false},
-              {number:"0904958694", assigned:false},
-              {number:"0904958694", assigned:false},
-              {number:"0904958694", assigned:false}
-              ]
-
+           
             tbody
-              each item, index in items
-                +tableRow(item,index)
+              each phoneNumber, index in phoneNumbers
+                +tableRow(phoneNumber,index)
           
