@@ -36,9 +36,26 @@ a {
 .form {
   width: 100%;
   display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: var(--margin) 0;
+}
+.form-group {
+  width: 100%;
+  display: flex;
   justify-content: center;
   align-items: stretch;
-  margin: var(--margin) 0;
+}
+.help-text {
+  width: 40%;
+  background: rgba(255, 0, 0, 0.1);
+  color: #f44336;
+  padding: 1rem;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.4rem;
+  visibility: hidden;
 }
 
 .num-input {

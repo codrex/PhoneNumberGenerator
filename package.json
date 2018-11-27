@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon bin/www",
+    "start": "yarn migrate:undo && yarn migrate && nodemon bin/www",
     "migrate": "sequelize db:migrate",
     "migrate:undo": "sequelize db:migrate:undo:all",
     "test": "NODE_ENV=test yarn migrate:undo && NODE_ENV=test yarn migrate && jest",
