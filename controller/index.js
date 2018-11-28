@@ -8,17 +8,17 @@ const {
   GET_NUMBER_ERROR_MSG,
   GEN_NUMBERS_ERROR_MSG,
   NUMBERS_TO_GEN,
-  SORT_ORDER,
+  SORT_ORDER_ASC,
 } = require('../constants');
 
 async function getPhoneNumbers(req, res) {
   try {
     const { db, template = 'index', params } = req;
-    const { order = SORT_ORDER } = params;
+    const { order = SORT_ORDER_ASC } = params;
     const payload = await getNumbers(db, order);
     res.render(template, {
       title: 'phone number generator',
-      ...buildPhoneNumberPayload(payload),
+      ...buildPhoneNumberPayload(payload, order),
     });
   } catch (error) {
     throw new Error(GET_NUMBER_ERROR_MSG);
