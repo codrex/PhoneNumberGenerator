@@ -1,35 +1,15 @@
 extends layout
 
-mixin tableRow(item, index)
-  tr
-    th(scope="row")=index + 1
-      td=item.number
-      td=item.assigned
-
-mixin headerText(title,value)
-  p.table-header-text #{title}:  #{value}
-
 block content
   .content
       h1.title Phone Number Generator
       form.form
-        button.c-btn.c-btn--primary(type="submit") Generate numbers
-        input(type="number").num-input 
+        .form-group
+          button.c-btn.c-btn--primary(type="submit") Generate numbers
+          input(type="number").num-input 
+        p.help-text Enter a number between 1 and 500
       .table-container
-        .table-header
-          +headerText("total",total)
-          +headerText("max number",maxNumber)
-          +headerText("min number",minNumber)
-        .table-responsive
-          table.table.table-striped.table-borderless.table-hover
-            thead
-              tr
-                th(scope="col") #
-                th(scope="col") Phone number 
-                  i.fa.fa-sort.sort-icon(aria-hidden="true" role="presentation")
-                th(scope="col") assigned
-           
-            tbody
-              each phoneNumber, index in phoneNumbers
-                +tableRow(phoneNumber,index)
+        include table.pug
+
+      
           
