@@ -13,6 +13,7 @@ const res = {
 };
 const req = {
   db: {},
+  params: {},
 };
 
 describe('controller', () => {

@@ -34,6 +34,8 @@ module.exports = {
     '/migrations/',
     '/views/',
     '/config/',
+    '/public/',
+    'gulpfile.js',
     '.eslintrc.js',
     'jest.config.js',
   ],
