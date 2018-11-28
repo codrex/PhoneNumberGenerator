@@ -63,6 +63,6 @@ class Fn {
 const fn = new Fn();
 window.addEventListener('load', fn.onLoad, false);
 
-if (!window) {
+if (window && window.testEnv) {
   module.exports = Fn;
 }
