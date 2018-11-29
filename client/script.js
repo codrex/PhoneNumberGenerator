@@ -22,19 +22,55 @@ class Fn {
     const number = input.value;
     const isValid = Fn.validateInput(number);
     if (isValid) {
-      Fn.makeRequest('POST', `/generate/${number}`, this.updateTable);
-      input.value = '';
+      Fn.makeRequest('POST', `/generate/${number}`, this.afterPhoneNumbersGen);
+      this.delayButtonUpdate();
     }
   };
 
-  sortNumbers = () => {
-    this.sortIn = this.sortIn === ASC ? DESC : ASC;
-    Fn.makeRequest('GET', `/sort/${this.sortIn}`, this.updateTable);
+  afterPhoneNumbersGen = (response) => {
+    this.updateView(response);
+    const button = document.querySelector('.c-btn');
+    button.classList.remove('c-btn--disable');
+    button.innerHTML = this.buttonText;
+    this.showToast('Number generated')();
   };
 
-  updateTable = (response) => {
+  delayButtonUpdate() {
+    const button = document.querySelector('.c-btn');
+    this.buttonText = document.querySelector('.c-btn').innerHTML;
+    this.timeout = setTimeout(() => {
+      button.classList.add('c-btn--disable');
+      button.innerHTML = 'Generating numbers...';
+    }, 100);
+  }
+
+  sortNumbers = () => {
+    this.sortIn = this.sortIn === ASC ? DESC : ASC;
+    Fn.makeRequest('GET', `/sort/${this.sortIn}`, this.updateView);
+  };
+
+  showToast = (message) => {
+    const toast = document.querySelector('.toast');
+    const toastText = document.querySelector('.toast-text');
+    toast.classList.add('toast--show');
+    toastText.innerHTML = message;
+    return (time = 2000) => {
+      clearTimeout(this.toastTimeout);
+      this.toastTimeout = setTimeout(() => {
+        toast.classList.remove('toast--show');
+        toastText.innerHTML = '';
+      }, time);
+    };
+  };
+
+  updateView = ({ responseText, status }) => {
+    clearTimeout(this.timeout);
     const tableContainer = document.querySelector('.table-container');
-    tableContainer.innerHTML = response.responseText;
+    const body = document.querySelector('body');
+    const input = document.querySelector('.num-input');
+    const htmlParent = status === 200 ? tableContainer : body;
+    htmlParent.innerHTML = responseText;
+    input.value = '';
     this.addSortEventListener();
   };
 
@@ -51,7 +87,7 @@ class Fn {
   static makeRequest(method, url, cBack) {
     const requester = new XMLHttpRequest();
     requester.onreadystatechange = function onreadystatechange() {
-      if (this.readyState === 4 && this.status === 200) {
+      if (this.readyState === 4) {
         cBack(this);
       }
     };

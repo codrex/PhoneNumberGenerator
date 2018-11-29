@@ -11,6 +11,11 @@ const {
   SORT_ORDER_ASC,
 } = require('../constants');
 
+function renderErrorPage(res, code, message) {
+  res.status(code);
+  res.render('error', { message });
+}
+
 async function getPhoneNumbers(req, res) {
   try {
     const { db, template = 'index', params } = req;
@@ -21,7 +26,7 @@ async function getPhoneNumbers(req, res) {
       ...buildPhoneNumberPayload(payload, order),
     });
   } catch (error) {
-    throw new Error(GET_NUMBER_ERROR_MSG);
+    renderErrorPage(res, 500, GET_NUMBER_ERROR_MSG);
   }
 }
 
@@ -33,11 +38,12 @@ async function createPhoneNumbers(req, res, next) {
     await addNumbers(db, phoneNumbers);
     next();
   } catch (error) {
-    throw new Error(GEN_NUMBERS_ERROR_MSG);
+    renderErrorPage(res, 500, GEN_NUMBERS_ERROR_MSG);
   }
 }
 
 module.exports = {
   getPhoneNumbers,
   createPhoneNumbers,
+  renderErrorPage,
 };

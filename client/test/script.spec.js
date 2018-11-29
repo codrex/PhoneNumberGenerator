@@ -1,5 +1,8 @@
 global.window = { addEventListener: jest.fn(), testEnv: true };
-const eventListenerObj = { addEventListener: jest.fn() };
+const eventListenerObj = {
+  addEventListener: jest.fn(),
+  classList: { add: jest.fn(), remove: jest.fn() },
+};
 global.document = { querySelector: () => eventListenerObj };
 
 const Fn = require('../script');
@@ -64,17 +67,18 @@ describe('Script Fn', () => {
     });
   });
 
-  describe('updateTable', () => {
+  describe('updateView', () => {
     it('should update DOM with new html string ', () => {
       const response = { responseText: '<div>new table</div>' };
       fn.addSortEventListener = jest.fn();
-      fn.updateTable(response);
+      fn.updateView(response);
       expect(eventListenerObj.innerHTML).toBe(response.responseText);
     });
+
     it('should call addSortEventListener ', () => {
       const response = { responseText: '' };
       fn.addSortEventListener = jest.fn();
-      fn.updateTable(response);
+      fn.updateView(response);
       expect(fn.addSortEventListener).toBeCalled();
     });
   });
@@ -129,7 +133,6 @@ describe('Script Fn', () => {
       global.XMLHttpRequest = function XMLHttpRequestMock() {
         return {
           readyState: 4,
-          status: 200,
           open,
           send,
         };
@@ -138,22 +141,70 @@ describe('Script Fn', () => {
       Fn.makeRequest('GET', 'url', cb);
       expect(cb).toBeCalled();
     });
-    it('should call not the call back function passed in as arg when request fails', () => {
-      const open = jest.fn();
-      const send = jest.fn(function xmlFn() {
-        this.onreadystatechange();
-      });
-      global.XMLHttpRequest = function XMLHttpRequestMock() {
-        return {
-          readyState: 4,
-          status: 400,
-          open,
-          send,
-        };
-      };
-      const cb = jest.fn();
-      Fn.makeRequest('GET', 'url', cb);
-      expect(cb).not.toBeCalled();
+  });
+
+  describe('afterPhoneNumbersGen', () => {
+    const response = {
+      responseText: '',
+      status: 200,
+    };
+    it('should update view after phone number generation', () => {
+      const spy = jest.spyOn(fn, 'updateView');
+      fn.afterPhoneNumbersGen(response);
+      expect(spy).toBeCalled();
+    });
+
+    it('should remove css class', () => {
+      fn.afterPhoneNumbersGen(response);
+      expect(eventListenerObj.classList.remove).toBeCalled();
+    });
+
+    it('should update button text', () => {
+      fn.buttonText = 'button';
+      const { showToast } = fn;
+      fn.showToast = () => () => {};
+      fn.afterPhoneNumbersGen(response);
+      expect(eventListenerObj.innerHTML).toBe(fn.buttonText);
+      fn.showToast = showToast;
+    });
+
+    it('should display toast', () => {
+      const spy = jest.spyOn(fn, 'showToast');
+      fn.afterPhoneNumbersGen(response);
+      expect(spy).toBeCalled();
+    });
+  });
+
+  describe('delayButtonUpdate', () => {
+    it('should update button after 100ms', () => {
+      jest.useFakeTimers();
+      fn.delayButtonUpdate();
+      jest.runAllTimers();
+      expect(eventListenerObj.classList.add).toBeCalled();
+    });
+  });
+
+  describe('showToast', () => {
+    it('should show toast', () => {
+      jest.useFakeTimers();
+      fn.delayButtonUpdate();
+      jest.runAllTimers();
+      expect(eventListenerObj.classList.add).toBeCalled();
+    });
+
+    it('should show toast', () => {
+      const message = 'hello';
+      fn.showToast(message);
+      expect(eventListenerObj.classList.add).toBeCalledWith('toast--show');
+      expect(eventListenerObj.innerHTML).toBe(message);
+    });
+
+    it('should hide toast after 2000ms', () => {
+      jest.useFakeTimers();
+      fn.showToast()();
+      jest.runAllTimers();
+      expect(eventListenerObj.classList.remove).toBeCalledWith('toast--show');
+      expect(eventListenerObj.innerHTML).toBe('');
     });
   });
 });
