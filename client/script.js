@@ -1,5 +1,7 @@
 const ASC = 'ASC';
 const DESC = 'DESC';
+const GEN_NUMBERS_SUCCESS_MSG = 'Phone numbers generated successfully';
+const GENERATING_NUMB_MSG = 'Generating numbers...';
 class Fn {
   constructor() {
     this.sortIn = ASC;
@@ -32,7 +34,7 @@ class Fn {
     const button = document.querySelector('.c-btn');
     button.classList.remove('c-btn--disable');
     button.innerHTML = this.buttonText;
-    this.showToast('Number generated')();
+    this.showToast(GEN_NUMBERS_SUCCESS_MSG)();
   };
 
   delayButtonUpdate() {
@@ -40,7 +42,7 @@ class Fn {
     this.buttonText = document.querySelector('.c-btn').innerHTML;
     this.timeout = setTimeout(() => {
       button.classList.add('c-btn--disable');
-      button.innerHTML = 'Generating numbers...';
+      button.innerHTML = GENERATING_NUMB_MSG;
     }, 100);
   }
 
