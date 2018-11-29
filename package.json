@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "yarn migrate:undo && yarn migrate && nodemon bin/www",
+    "start": "mkdir data && yarn migrate:undo && yarn migrate && nodemon bin/www",
     "migrate": "sequelize db:migrate",
     "migrate:undo": "sequelize db:migrate:undo:all",
     "test": "NODE_ENV=test yarn migrate:undo && NODE_ENV=test yarn migrate && jest",
@@ -21,8 +21,7 @@
     "pug": "2.0.0-beta11",
     "sequelize": "^4.41.2",
     "sequelize-cli": "^5.3.0",
-    "sqlite3": "^4.0.4",
-    "supertest": "^3.3.0"
+    "sqlite3": "^4.0.4"
   },
   "devDependencies": {
     "@babel/core": "^7.1.6",
@@ -41,6 +40,7 @@
     "gulp-rename": "^1.4.0",
     "gulp-uglify": "^3.0.1",
     "jest": "^23.6.0",
-    "nodemon": "^1.18.6"
+    "nodemon": "^1.18.6",
+    "supertest": "^3.3.0"
   }
 }
