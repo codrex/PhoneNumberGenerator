@@ -1,15 +1,23 @@
-const { getPhoneNumbers } = require('../');
-const { GET_NUMBER_ERROR_MSG } = require('../../constants');
+const { getPhoneNumbers, createPhoneNumbers } = require('../');
+const {
+  GET_NUMBER_ERROR_MSG,
+  GEN_NUMBERS_ERROR_MSG,
+} = require('../../constants');
 
 jest.mock('../../lib/modelRepositories/phoneNumber', () => ({
   getNumbers: () => Promise.resolve([]),
+  addNumbers: () => Promise.resolve([]),
 }));
 jest.mock('../../lib/adapters/builders.js', () => ({
   buildPhoneNumberPayload: () => ({}),
 }));
+jest.mock('../../lib/phoneNumberGen', () => ({
+  generatePhoneNumbers: () => ({}),
+}));
 
 const res = {
   render: jest.fn(),
+  status: jest.fn(),
 };
 const req = {
   db: {},
@@ -26,9 +34,26 @@ describe('controller', () => {
     });
 
     it('should throw when an error occurs', async () => {
-      await expect(getPhoneNumbers({}, {})).rejects.toThrow(
-        new Error(GET_NUMBER_ERROR_MSG),
-      );
+      await getPhoneNumbers({}, res);
+      expect(res.render).toBeCalledWith('error', {
+        message: GET_NUMBER_ERROR_MSG,
+      });
+      expect(res.status).toBeCalledWith(500);
+    });
+  });
+  describe('createPhoneNumbers', () => {
+    it('should create phone numbers successfully', async () => {
+      const next = jest.fn();
+      await createPhoneNumbers(req, res, next);
+      expect(next).toBeCalled();
+    });
+
+    it('should throw when an error occurs', async () => {
+      await createPhoneNumbers({}, res);
+      expect(res.render).toBeCalledWith('error', {
+        message: GEN_NUMBERS_ERROR_MSG,
+      });
+      expect(res.status).toBeCalledWith(500);
     });
   });
 });
