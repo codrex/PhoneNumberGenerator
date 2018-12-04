@@ -3,7 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "mkdir data && yarn migrate:undo && yarn migrate && nodemon bin/www",
+    "start": "mkdir -p data && yarn migrate:undo && yarn migrate && nodemon bin/www",
+    "start:prod": "node bin/www",
+    "heroku-postbuild": "mkdir -p data && yarn migrate ",
     "migrate": "sequelize db:migrate",
     "migrate:undo": "sequelize db:migrate:undo:all",
     "test": "NODE_ENV=test yarn migrate:undo && NODE_ENV=test yarn migrate && jest",
